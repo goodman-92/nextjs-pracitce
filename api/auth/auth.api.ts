@@ -1,4 +1,4 @@
-import client from "../../../api/axiosClient";
+import client from "../axiosClient";
 import {AxiosResponse} from "axios";
 
 type UserReqBody = {
@@ -20,7 +20,15 @@ const loginApi = {
 	}
 }
 
+const authApi = {
+	path: '/api/auth',
+	fetch: async (jwt: string): Promise<AxiosResponse> => {
+	 	return await client.post(authApi.path, {jwt})
+	}
+}
+
 
 export {
-	loginApi
+	loginApi,
+	authApi
 }

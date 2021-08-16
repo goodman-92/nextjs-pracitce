@@ -1,20 +1,33 @@
-.chat-rooms {
-  width: 28rem;
+.chatRooms {
+    width: 24rem;
+    height: auto;
+    min-height: 85.5vh;
+    border: 1px solid black;
+}
 
-  &__header {
+.chatRooms__header {
     width: 100%;
-    height: 4rem;
-    border-bottom: 0.1px solid #d2cece;
+    height: 3.5rem;
+    border-bottom: 1px solid #d2cece;
     align-items: center;
     display: flex;
-  }
-
-  &__title {
-    font-size: 1.2rem;
-    flex: 1;
-  }
-
-  &__new-chat-room{
     padding: 0.1rem;
-  }
+}
+
+.chatRooms__title {
+    font-size: 1.2rem;
+    flex: 7;
+    align-items: center;
+}
+
+.chatRooms__buttons {
+    flex: 3;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chatRooms__buttons > span {
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.2rem;
 }
