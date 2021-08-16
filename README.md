@@ -1,4 +1,10 @@
-## Next.js 기술
+## Next.js 기술 연습
+
+서버는 따로 있음
+ useSwr, antd Framework, css.module 연습, typescript 데이터 만들기 연습등..
+ 하다보니 팀즈 클론 중 , serverSideProps 테스트
+              
+
 
 - [x] 로그인 기능
 - [ ] 채팅 구현
