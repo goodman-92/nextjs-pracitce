@@ -13,18 +13,19 @@
 .header__user {
     width: 100%;
     position: relative;
+    flex: 2;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
 }
 
 .userImage__wrap {
     width: 2rem;
     height: 2rem;
     border-radius: 0.9rem;
-    background-color: white;
+    background-color: #5015bf;
     display: flex;
+    color: #fff;
     align-items: center;
     justify-content: center;
     z-index: 1;
@@ -32,7 +33,7 @@
 
 .userImage__wrap:only-child {
     z-index: 1;
-    color: black;
+    color: #fff;
 }
 
 .userImage__status {
@@ -45,13 +46,26 @@
     background-color: #7bc043;
 }
 
-.userMenu{
-    width: 15rem;
+.userMenu {
+    width: 20rem;
     height: auto;
-    background-color: #fff;
+    background-color: #292929;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
 }
-.userMenu__box{
+
+.userThumb {
     width: 100%;
-    padding: 2rem;
-    
+    display: flex;
+    position: relative;
+}
+
+.userMenu__box {
+    width: 100%;
+    display: flex;
+    padding-left: 1rem;
+    align-items: center;
+    min-height: 5rem;
+    border-bottom: 1px solid gray;
 }

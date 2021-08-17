@@ -14,7 +14,9 @@ function ChatRooms() {
 			</section>
 			<section>
 				<ul>
-					<li></li>
+					<li>
+
+					</li>
 				</ul>
 			</section>
 		</div>
