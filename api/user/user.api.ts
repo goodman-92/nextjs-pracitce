@@ -1,5 +1,5 @@
 import client from "../axiosClient";
-import {AxiosResponse} from "axios";
+import {AxiosError, AxiosResponse} from "axios";
 
 class Me {
 	constructor(data: any) {
@@ -20,7 +20,7 @@ interface UserInfo {
 
 const userApi = {
 	path: 'api/user',
-	fetch: () => client.get(userApi.path).then(({data}: AxiosResponse<UserInfo>) => data).catch(console.error)
+	fetch: () => client.get(userApi.path).then(({data}: AxiosResponse<UserInfo>) => data)
 }
 
 

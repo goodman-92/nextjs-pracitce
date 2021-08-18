@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Layouts from "./layouts";
 import React, {FC} from "react";
 
 interface Props {

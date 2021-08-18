@@ -7,28 +7,68 @@ import useSwr from "swr";
 import {userApi} from "../../api/user/user.api";
 import Cookies from "js-cookie";
 import classNames from "classnames";
-import {PictureOutlined} from "@ant-design/icons";
+import {DeleteOutlined, PictureOutlined, UploadOutlined} from "@ant-design/icons";
 
 const {Header} = Layout;
 
-function UserThumb({image, name}: { image: string, name: string }) {
+const UserThumb = () => {
+	const {data: user, error} = useSwr(userApi.path, userApi.fetch);
+	console.log(error, 'userError')
+
+	if (error || !user) return null;
+
+	const { image, name, email} = user;
+
 	return (
 		<div className={classNames(layouts.userThumb, 'flex')}>
 			<div className={layouts.userImage__wrap}>
-				{image ? <img src={image} alt="userImage"/> : <div>{name[0].toUpperCase()}</div>}
+				{user.image ? <img src={image} alt="userImage"/> : <div>{name[0].toUpperCase()}</div>}
 				<div className={layouts.userImage__status}/>
 			</div>
 		</div>
 	);
 }
 
-const UserMenu = ({user: {name, image, email}, handleModalVisible}: any) => {
+function ProfileModal() {
+	return (
+		<div className={layouts.profileModal_container}>
+			<section className="profileModal__header">
+				<span>프로필 사진 변경</span>
+				<span>모든 microsoft 365 앱에 대해 업데이트 됩니다.</span>
+			</section>
+			<section className="profileModal__content">
+				<div className="column" style={{display:"flex", flexDirection: "column"}}>
+					<div className="profileModal__buttons">
+						<div className="profileModal__image__upload">
+							<UploadOutlined/>
+							사진 업로드
+						</div>
+						<div className="profileModal__image__delete">
+							<DeleteOutlined/>
+							사진 삭제
+						</div>
+					</div>
+					<div className="profileModal__uploadImage">
+						<div className="profileModal__uploadImage__wrapper">
+							<UserThumb/>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	);
+}
+
+const UserMenu = ({user: {name, image, email}}: any) => {
 	const [isShowImgEdit, setIsShowImgEdit] = useState(false);
 
 	const openImageUploadModal = () => {
 		setIsShowImgEdit(false);
-		handleModalVisible(true);
+		handleModalVisible();
 	}
+
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const handleModalVisible = () => setIsModalVisible(true);
 
 	return (
 		<div className={layouts.userMenu}>
@@ -44,7 +84,7 @@ const UserMenu = ({user: {name, image, email}, handleModalVisible}: any) => {
 							height: "3rem"
 						}}/>
 					}
-					<UserThumb name={name} image={image}/>
+					<UserThumb/>
 				</div>
 				<div style={{display: "flex", flexDirection: "column",}}>
 					<span>{name}</span>
@@ -62,6 +102,9 @@ const UserMenu = ({user: {name, image, email}, handleModalVisible}: any) => {
 			<div className={layouts.userMenu__box}>
 				로그아웃
 			</div>
+
+			<Modal closable={false} footer={null}
+				   children={<ProfileModal/>} onCancel={() => setIsModalVisible(false)} visible={isModalVisible}/>
 		</div>
 	);
 }
@@ -73,17 +116,9 @@ const UserImg = memo(({handleModalVisible}: any) => {
 
 	return (
 		<div className={layouts.header__user}>
-			{/* 드롭다운 어떻게 써먹는거야 아나 */}
 			<Dropdown trigger={["click"]} overlay={<UserMenu user={userInfo} handleModalVisible={handleModalVisible}/>}>
-				<div className={layouts.userImage__wrap}>
-					{userInfo.image ?
-						<img src={userInfo.image} alt="userImage"/>
-						:
-						<div>
-							{userInfo.name[0].toUpperCase()}
-						</div>
-					}
-					<div className={layouts.userImage__status}/>
+				<div>
+					<UserThumb/>
 				</div>
 			</Dropdown>
 		</div>
@@ -94,7 +129,6 @@ const Headers = () => {
 	const router = useRouter();
 	const goMenu = ({key}: { key: string }) => router.push(key).catch()
 	const {data: userInfo, error} = useSwr(userApi.path, userApi.fetch)
-	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	const goHome = (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
@@ -111,10 +145,6 @@ const Headers = () => {
 		}
 	}
 
-	const handleModalVisible = () => {
-		setIsModalVisible(true);
-	}
-
 	return (
 		<Header className={layouts.header} style={{display: "flex"}}>
 			<div style={{flex: "1", color: '#fff', cursor: 'pointer', fontSize: "15px", marginRight: "10px"}}
@@ -129,13 +159,8 @@ const Headers = () => {
 			</Menu>
 
 			<div className={layouts.header__user}>
-				<UserImg handleModalVisible={handleModalVisible}/>
+				<UserImg/>
 			</div>
-			<Modal title="Basic Modal" onCancel={() => setIsModalVisible(false)} visible={isModalVisible}>
-				<p>Some contents...</p>
-				<p>Some contents...</p>
-				<p>Some contents...</p>
-			</Modal>
 		</Header>
 
 	);
