@@ -1,21 +1,20 @@
-import type {GetServerSideProps, NextApiRequest, NextApiResponse} from "next";
-import {NextApiRequestQuery} from "next/dist/next-server/server/api-utils";
-import {userApi} from "../api/user/user.api";
-import {Me} from "../pages/_app";
+import {NextPageContext} from "next";
+import cookies from "next-cookies";
+import {authApi} from "../api/auth/auth.api";
 
-export const protectResolver = async (our: any) => async ({req, res, query}: { req: NextApiRequest, res: NextApiResponse, query: NextApiRequestQuery }) => {
+export const withUser = (callback: any) => async (context: NextPageContext) => {
+	const ctxCookies = cookies(context)
 
-		try {
-			console.log(userApi.fetch(), 'req')
+	const jwt = ctxCookies.jwt ?? "";
 
-			const {data} = await userApi.fetch()
+	if (!jwt) return {redirect: {destination: '/login', statusCode: 302}}
 
-			return our({query, resolvedUrl: "", req, res, previewData: {me: new Me(data)}})
+	try {
+		await authApi.fetch(jwt);
 
-		} catch (e) {
-			return our({query, resolvedUrl: "", req, res})
-
-		}
-
-
+	} catch (e) {
+		return {redirect: {destination: '/login', statusCode: 302}}
 	}
+
+	return await callback(context)
+}
